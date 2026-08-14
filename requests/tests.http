@@ -1,0 +1,205 @@
+@baseUrl = http://localhost:3000/api
+@authUrl = http://localhost:3000/api/auth
+@announcementsUrl = http://localhost:3000/api/announcements
+
+### Register wrong content
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "username": "abc",
+  "email": "wrong-email",
+  "password": "123123",
+  "name": "Anna"
+}
+
+### Register new user
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "username": "panim",
+  "email": "panim@example.com",
+  "password": "password123",
+  "name": "Olha"
+}
+
+### Register new user with existing email
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "username": "anotheruser",
+  "email": "panim@example.com",
+  "password": "password123",
+  "name": "Another"
+}
+
+### Wrong Login
+POST {{authUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "panim",
+  "password": "wrongpassword"
+}
+
+### Correct Login
+POST {{authUrl}}/login
+Content-Type: application/json
+
+{
+  "username": "panim",
+  "password": "password123"
+}
+
+### Get user info with token
+GET {{authUrl}}/me
+Authorization: Bearer token_here
+
+### Get user info without a token
+GET {{authUrl}}/me
+
+### Wrong access token
+GET {{authUrl}}/me
+Authorization: Bearer abc123
+
+### Logout without authentication
+POST {{authUrl}}/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "token_here"
+}
+
+### Logout with authentication
+POST {{authUrl}}/logout
+Content-Type: application/json
+Authorization: Bearer token_here
+
+{
+  "refreshToken": "token_here"
+}
+
+### Create announcement without a registration
+POST {{announcementsUrl}}
+Content-Type: application/json
+
+{
+  "title": "Продам велосипед",
+  "description": "Продам хороший велосипед у відмінному стані",
+  "price": 5000,
+  "category": "sale"
+}
+
+### Create wrong announcement
+POST {{announcementsUrl}}
+Content-Type: application/json
+Authorization: Bearer token_here
+
+{
+  "title": "Bike",
+  "description": "Short",
+  "price": -100,
+  "category": "something"
+}
+
+### Create correct announcement
+POST {{announcementsUrl}}
+Content-Type: application/json
+Authorization: Bearer token_here
+
+{
+  "title": "Продам велосипед",
+  "description": "Продам хороший велосипед у відмінному стані",
+  "price": 5000,
+  "category": "sale"
+}
+
+### Create correct announcement 2
+POST {{announcementsUrl}}
+Content-Type: application/json
+Authorization: Bearer token_here
+
+
+{
+  "title": "Ремонт ноутбуків",
+  "description": "Професійний ремонт ноутбуків та комп'ютерів",
+  "price": 1000,
+  "category": "service"
+}
+
+### Create correct announcement 3
+POST {{announcementsUrl}}
+Content-Type: application/json
+Authorization: Bearer token_here
+
+
+{
+  "title": "Шукаю Frontend розробника",
+  "description": "Потрібен розробник для роботи над вебпроєктом",
+  "price": 30000,
+  "category": "job"
+}
+
+### Create correct announcement 4
+POST {{announcementsUrl}}
+Content-Type: application/json
+Authorization: Bearer token_here
+
+
+{
+  "title": "Продам старий стіл",
+  "description": "Дерев'яний стіл у хорошому стані",
+  "price": 1500,
+  "category": "sale"
+}
+
+### Get all announcements
+GET {{announcementsUrl}}
+
+### Get oldest announcements
+GET {{announcementsUrl}}?sort=oldest
+
+### User search for announcements
+GET {{announcementsUrl}}?search=ВЕЛОСИПЕД
+
+### Get wrong page
+GET {{announcementsUrl}}?page=0
+
+### Get announcement by ID
+GET {{announcementsUrl}}/3
+
+### Get wrong announcement ID
+GET {{announcementsUrl}}/99999
+
+### Update own announcement
+PATCH {{announcementsUrl}}/2
+Content-Type: application/json
+Authorization: Bearer token_here
+{
+  "price": 4500
+}
+
+### Update announcement with empty body
+PATCH {{announcementsUrl}}/2
+Content-Type: application/json
+Authorization: Bearer token_here
+
+{}
+
+### Update announcement without authorization
+PATCH {{announcementsUrl}}/2
+Content-Type: application/json
+
+{
+  "title": "New"
+}
+
+### Delete own announcement
+DELETE {{announcementsUrl}}/1
+Authorization: Bearer token_here
+
+### Refresh token
+POST {{authUrl}}/refresh
+
