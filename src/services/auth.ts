@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
 import type { Response } from "express";
 import prisma from "../../prisma/client.ts";
 import {
@@ -14,7 +13,11 @@ export const createTokens = async (userId: number) => {
     { expiresIn: ACCESS_TOKEN_LIFETIME / 1000 },
   );
 
-  const refreshToken = crypto.randomBytes(40).toString("hex");
+  const refreshToken = jwt.sign(
+    { sub: String(userId) },
+    process.env.JWT_SECRET!,
+    { expiresIn: REFRESH_TOKEN_LIFETIME / 1000 },
+  );
 
   await prisma.refreshToken.create({
     data: {
