@@ -24,6 +24,17 @@ Content-Type: application/json
   "name": "Olha"
 }
 
+### Register new user 2
+POST {{authUrl}}/register
+Content-Type: application/json
+
+{
+  "username": "panim2",
+  "email": "panim2@example.com",
+  "password": "password123",
+  "name": "Olha2"
+}
+
 ### Register new user with existing email
 POST {{authUrl}}/register
 Content-Type: application/json
@@ -193,10 +204,23 @@ PATCH {{announcementsUrl}}/2
 Content-Type: application/json
 
 {
-  "title": "New"
+  "title": "Newest"
+}
+
+### Update announcement by another user
+PATCH {{announcementsUrl}}/5
+Content-Type: application/json
+Authorization: Bearer token_here
+
+{
+  "title": "Newest"
 }
 
 ### Delete own announcement
+DELETE {{announcementsUrl}}/1
+Authorization: Bearer token_here
+
+### Delete another user's announcement
 DELETE {{announcementsUrl}}/1
 Authorization: Bearer token_here
 
